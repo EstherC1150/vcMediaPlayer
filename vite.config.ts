@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwindcss()],
     server: {
-      port: 5175,
+      port: 5173,
       host: true,
       proxy: {
         "/webdav": {
