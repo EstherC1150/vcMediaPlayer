@@ -3,8 +3,11 @@ import { createClient, FileStat } from "webdav";
 const WEBDAV_USERNAME = import.meta.env.VITE_WEBDAV_USERNAME || "web";
 const WEBDAV_PASSWORD = import.meta.env.VITE_WEBDAV_PASSWORD || "RCKdnpq1004+";
 
-// WebDAV 클라이언트 생성 (/webdav 개발 서버 프록시 사용)
-const client = createClient("/webdav", {
+const BASE_PATH = import.meta.env.BASE_URL ? import.meta.env.BASE_URL.replace(/\/$/, "") : "";
+const WEBDAV_PROXY_PATH = `${BASE_PATH}/webdav`;
+
+// WebDAV 클라이언트 생성 (개발 서버 프록시 사용)
+const client = createClient(WEBDAV_PROXY_PATH, {
   username: WEBDAV_USERNAME,
   password: WEBDAV_PASSWORD,
   headers: {
@@ -169,7 +172,7 @@ export const fetchTxtContent = async (filePath: string): Promise<string> => {
 // 비디오 URL 생성 (/webdav 프록시 경로 사용)
 export const getVideoUrl = (filePath: string): string => {
   const normalizedPath = filePath.replace(/\.\.\//g, "").replace(/^\/+/, "");
-  return encodeURI(`/webdav/${normalizedPath}`);
+  return encodeURI(`${WEBDAV_PROXY_PATH}/${normalizedPath}`);
 };
 
 // 파일 다운로드
@@ -179,7 +182,7 @@ export const downloadFile = async (
 ): Promise<void> => {
   try {
     const normalizedPath = filePath.replace(/\.\.\//g, "").replace(/^\/+/, "");
-    const downloadUrl = encodeURI(`/webdav/${normalizedPath}`);
+    const downloadUrl = encodeURI(`${WEBDAV_PROXY_PATH}/${normalizedPath}`);
 
     const response = await fetch(downloadUrl, {
       method: "GET",

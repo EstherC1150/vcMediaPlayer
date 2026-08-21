@@ -16,11 +16,12 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       strictPort: true,
       host: true,
+      hmr: false,
       proxy: {
-        "/webdav": {
+        "^/(video/)?webdav": {
           target: targetHost,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/webdav/, ""),
+          rewrite: (path) => path.replace(/^(\/video)?\/webdav/, ""),
           secure: false,
           configure: (proxy) => {
             // 비디오 스트리밍을 위한 설정
