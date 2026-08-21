@@ -10,9 +10,11 @@ export default defineConfig(({ mode }) => {
   const password = env.VITE_WEBDAV_PASSWORD || "RCKdnpq1004+";
 
   return {
+    base: "/video/",
     plugins: [react(), tailwindcss()],
     server: {
       port: 5173,
+      strictPort: true,
       host: true,
       proxy: {
         "/webdav": {
